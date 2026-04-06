@@ -651,8 +651,7 @@ function submitForm() {
 
   const novedad = document.getElementById('novedad').value.trim();
 
-  // ── Enviar a Google Sheets vía Apps Script Web App ──
-  // Reemplaza esta URL por la de tu Apps Script publicado
+
   const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyVl0Mb3_j9_ihArDyfO5prgonGaJF67QJyV5y2MH-hltGnYe4O-EmugqBKs_wIIBr-/exec';
 
   const payload = {
@@ -663,7 +662,7 @@ function submitForm() {
     novedad: novedad || 'Sin novedades'
   };
 
-  // Si la URL del script está configurada, enviar datos
+ 
   if (SCRIPT_URL !== 'https://script.google.com/macros/s/AKfycbyVl0Mb3_j9_ihArDyfO5prgonGaJF67QJyV5y2MH-hltGnYe4O-EmugqBKs_wIIBr-/exec') {
     fetch(SCRIPT_URL, {
       method: 'POST',
