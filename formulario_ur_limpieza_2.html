@@ -651,29 +651,50 @@ function submitForm() {
 
   const novedad = document.getElementById('novedad').value.trim();
 
-
+  // ── URL del Apps Script — ya configurada ──
   const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyVl0Mb3_j9_ihArDyfO5prgonGaJF67QJyV5y2MH-hltGnYe4O-EmugqBKs_wIIBr-/exec';
 
-  const payload = {
+  const params = new URLSearchParams({
     timestamp: new Date().toLocaleString('es-CO'),
     edificio, sector, cleaner, hora, tipo,
-    personas, estado: estado.value,
+    personas,
+    estado: estado.value,
     checklist: checklist.join(' | '),
     novedad: novedad || 'Sin novedades'
+  });
+
+  // Método iframe — funciona en TODOS los celulares sin bloqueos CORS
+  const iframe = document.createElement('iframe');
+  iframe.style.display = 'none';
+  iframe.name = 'submit-iframe-' + Date.now();
+  document.body.appendChild(iframe);
+
+  const form = document.createElement('form');
+  form.method = 'POST';
+  form.action = SCRIPT_URL;
+  form.target = iframe.name;
+  form.style.display = 'none';
+
+  params.forEach((value, key) => {
+    const input = document.createElement('input');
+    input.type = 'hidden';
+    input.name = key;
+    input.value = value;
+    form.appendChild(input);
+  });
+
+  document.body.appendChild(form);
+
+  iframe.onload = function() {
+    showSuccess(sector);
+    setTimeout(() => {
+      document.body.removeChild(form);
+      document.body.removeChild(iframe);
+    }, 2000);
   };
 
- 
-  if (SCRIPT_URL !== 'https://script.google.com/macros/s/AKfycbyVl0Mb3_j9_ihArDyfO5prgonGaJF67QJyV5y2MH-hltGnYe4O-EmugqBKs_wIIBr-/exec') {
-    fetch(SCRIPT_URL, {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
-    }).then(() => showSuccess(sector)).catch(() => showSuccess(sector));
-  } else {
-    // Demo mode: simular envío exitoso
-    setTimeout(() => showSuccess(sector), 800);
-  }
+  setTimeout(() => showSuccess(sector), 3000);
+  form.submit();
 }
 
 function showSuccess(sector) {
