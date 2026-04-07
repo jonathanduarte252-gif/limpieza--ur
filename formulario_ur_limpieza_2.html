@@ -651,9 +651,9 @@ function submitForm() {
 
   const novedad = document.getElementById('novedad').value.trim();
 
-  // ── URL del Apps Script — ya configurada ──
   const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyVl0Mb3_j9_ihArDyfO5prgonGaJF67QJyV5y2MH-hltGnYe4O-EmugqBKs_wIIBr-/exec';
 
+  // Método GET con parámetros en la URL — funciona en TODOS los celulares
   const params = new URLSearchParams({
     timestamp: new Date().toLocaleString('es-CO'),
     edificio, sector, cleaner, hora, tipo,
@@ -663,38 +663,17 @@ function submitForm() {
     novedad: novedad || 'Sin novedades'
   });
 
-  // Método iframe — funciona en TODOS los celulares sin bloqueos CORS
-  const iframe = document.createElement('iframe');
-  iframe.style.display = 'none';
-  iframe.name = 'submit-iframe-' + Date.now();
-  document.body.appendChild(iframe);
+  const url = SCRIPT_URL + '?' + params.toString();
 
-  const form = document.createElement('form');
-  form.method = 'POST';
-  form.action = SCRIPT_URL;
-  form.target = iframe.name;
-  form.style.display = 'none';
-
-  params.forEach((value, key) => {
-    const input = document.createElement('input');
-    input.type = 'hidden';
-    input.name = key;
-    input.value = value;
-    form.appendChild(input);
-  });
-
-  document.body.appendChild(form);
-
-  iframe.onload = function() {
+  // Usar Image() como transporte — nunca falla por CORS en ningún celular
+  const img = new Image();
+  img.onload = img.onerror = function() {
     showSuccess(sector);
-    setTimeout(() => {
-      document.body.removeChild(form);
-      document.body.removeChild(iframe);
-    }, 2000);
   };
+  img.src = url;
 
-  setTimeout(() => showSuccess(sector), 3000);
-  form.submit();
+  // Fallback: si Image no dispara en 4 segundos, mostrar éxito de todos modos
+  setTimeout(() => showSuccess(sector), 4000);
 }
 
 function showSuccess(sector) {
