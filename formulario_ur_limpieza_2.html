@@ -3,727 +3,501 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>Registro de Limpieza — Universidad del Rosario</title>
+<title>Registro de Limpieza — [NOMBRE EMPRESA]</title>
+<!--
+  ╔═══════════════════════════════════════════════════════════════╗
+  ║  SISTEMA QR DE GESTION DE LIMPIEZA — TEMPLATE v1.0           ║
+  ║  Para adaptar a un nuevo cliente, cambia las variables        ║
+  ║  marcadas con *** CAMBIAR *** abajo                           ║
+  ╚═══════════════════════════════════════════════════════════════╝
+-->
 <style>
-  :root {
-    --ur-red: #8B1A1A;
-    --ur-red-light: #B22222;
-    --ur-red-bg: #fdf2f2;
-    --ur-red-border: #e8c5c5;
-    --gray-light: #f8f8f8;
-    --gray-border: #ddd;
-    --text: #1a1a1a;
-    --muted: #666;
-    --success: #2e7d32;
-    --warn: #e65100;
-    --danger: #c62828;
-  }
-
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-
-  body {
-    font-family: 'Segoe UI', Arial, sans-serif;
-    background: #f0f0f0;
-    min-height: 100vh;
-    padding: 16px;
-  }
-
-  .card {
-    max-width: 560px;
-    margin: 0 auto;
-    background: #fff;
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 2px 20px rgba(0,0,0,0.12);
-  }
-
-  /* Header con logo */
-  .header {
-    background: var(--ur-red);
-    padding: 20px 24px;
-    display: flex;
-    align-items: center;
-    gap: 16px;
-  }
-
-  .logo-wrap {
-    background: #fff;
-    border-radius: 8px;
-    padding: 8px 10px;
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .logo-wrap img {
-    height: 48px;
-    width: auto;
-    display: block;
-  }
-
-  .header-text h1 {
-    color: #fff;
-    font-size: 1rem;
-    font-weight: 700;
-    line-height: 1.3;
-    letter-spacing: -0.2px;
-  }
-
-  .header-text p {
-    color: rgba(255,255,255,0.75);
-    font-size: 0.72rem;
-    margin-top: 3px;
-  }
-
-  /* Banda de info del sector */
-  .sector-banner {
-    background: var(--ur-red-bg);
-    border-bottom: 1px solid var(--ur-red-border);
-    padding: 10px 24px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .sector-banner .pin { font-size: 1rem; }
-
-  .sector-banner .sector-label {
-    font-size: 0.7rem;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--ur-red);
-    font-weight: 600;
-  }
-
-  .sector-banner .sector-value {
-    font-size: 0.88rem;
-    font-weight: 700;
-    color: var(--ur-red);
-    margin-left: 2px;
-  }
-
-  /* Body del formulario */
-  .form-body { padding: 20px 24px; }
-
-  .field { margin-bottom: 16px; }
-
-  .field label {
-    display: block;
-    font-size: 0.78rem;
-    font-weight: 600;
-    color: var(--text);
-    margin-bottom: 6px;
-    letter-spacing: 0.02em;
-  }
-
-  .field label .req { color: var(--ur-red); margin-left: 2px; }
-
-  .field input,
-  .field select,
-  .field textarea {
-    width: 100%;
-    padding: 10px 13px;
-    border: 1.5px solid var(--gray-border);
-    border-radius: 8px;
-    font-size: 0.88rem;
-    font-family: inherit;
-    color: var(--text);
-    background: #fff;
-    transition: border-color .15s;
-    appearance: none;
-  }
-
-  .field select {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 12px center;
-    padding-right: 36px;
-  }
-
-  .field input:focus,
-  .field select:focus,
-  .field textarea:focus {
-    outline: none;
-    border-color: var(--ur-red);
-    box-shadow: 0 0 0 3px rgba(139,26,26,0.1);
-  }
-
-  .field textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
-
-  .field .hint {
-    font-size: 0.68rem;
-    color: var(--muted);
-    margin-top: 4px;
-  }
-
-  /* Campo sector precargado (readonly) */
-  .sector-readonly {
-    background: var(--ur-red-bg) !important;
-    border-color: var(--ur-red-border) !important;
-    color: var(--ur-red) !important;
-    font-weight: 600;
-    cursor: not-allowed;
-  }
-
-  /* Grupos de 2 columnas */
-  .field-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    margin-bottom: 16px;
-  }
-
-  /* Checklist */
-  .checklist {
-    border: 1.5px solid var(--gray-border);
-    border-radius: 8px;
-    overflow: hidden;
-  }
-
-  .check-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 10px 13px;
-    border-bottom: 1px solid #f0f0f0;
-    cursor: pointer;
-    transition: background .1s;
-  }
-
-  .check-item:last-child { border-bottom: none; }
-  .check-item:hover { background: var(--gray-light); }
-
-  .check-item input[type="checkbox"] {
-    width: 18px; height: 18px;
-    accent-color: var(--ur-red);
-    cursor: pointer;
-    flex-shrink: 0;
-  }
-
-  .check-item label {
-    font-size: 0.84rem;
-    color: var(--text);
-    cursor: pointer;
-    margin: 0;
-    font-weight: 400;
-  }
-
-  /* Radio estado */
-  .estado-group {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-
-  .estado-option {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 10px 13px;
-    border: 1.5px solid var(--gray-border);
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all .15s;
-  }
-
-  .estado-option:hover { background: var(--gray-light); }
-  .estado-option input { accent-color: var(--ur-red); width: 17px; height: 17px; }
-
-  .estado-option.ok:has(input:checked)     { border-color: var(--success); background: #f1f8f1; }
-  .estado-option.warn:has(input:checked)   { border-color: var(--warn); background: #fff8f3; }
-  .estado-option.urgent:has(input:checked) { border-color: var(--danger); background: #fff3f3; }
-
-  .estado-option .emo { font-size: 1.1rem; }
-  .estado-option .estado-label { font-size: 0.88rem; font-weight: 500; color: var(--text); }
-
-  /* Divider */
-  .divider {
-    height: 1px;
-    background: #f0f0f0;
-    margin: 20px 0;
-  }
-
-  .section-label {
-    font-size: 0.68rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--muted);
-    margin-bottom: 12px;
-  }
-
-  /* Submit */
-  .submit-btn {
-    width: 100%;
-    padding: 14px;
-    background: var(--ur-red);
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    font-size: 0.95rem;
-    font-weight: 700;
-    cursor: pointer;
-    transition: background .15s, transform .1s;
-    letter-spacing: 0.02em;
-    margin-top: 8px;
-  }
-
-  .submit-btn:hover { background: var(--ur-red-light); }
-  .submit-btn:active { transform: scale(0.99); }
-  .submit-btn:disabled { background: #ccc; cursor: not-allowed; }
-
-  /* Footer */
-  .footer {
-    background: var(--gray-light);
-    border-top: 1px solid var(--gray-border);
-    padding: 12px 24px;
-    text-align: center;
-    font-size: 0.65rem;
-    color: var(--muted);
-    line-height: 1.6;
-  }
-
-  /* Success screen */
-  .success-screen {
-    display: none;
-    text-align: center;
-    padding: 48px 24px;
-  }
-
-  .success-icon { font-size: 3rem; margin-bottom: 16px; }
-  .success-title { font-size: 1.2rem; font-weight: 700; color: var(--success); margin-bottom: 8px; }
-  .success-sub { font-size: 0.85rem; color: var(--muted); line-height: 1.6; }
-  .success-sector { font-weight: 600; color: var(--ur-red); }
-
-  /* Error message */
-  .error-msg {
-    background: #fff3f3;
-    border: 1px solid #ffc0c0;
-    border-radius: 6px;
-    padding: 10px 13px;
-    font-size: 0.8rem;
-    color: var(--danger);
-    margin-bottom: 12px;
-    display: none;
-  }
-
-  @media (max-width: 400px) {
-    .field-row { grid-template-columns: 1fr; }
-    body { padding: 8px; }
-    .header { padding: 16px; }
-    .form-body { padding: 16px; }
-  }
+/* *** CAMBIAR: Color principal de la empresa *** */
+:root {
+  --color-primario: #8B1A1A;       /* Rojo UR — cambiar por color del cliente */
+  --color-primario-light: #B22222;
+  --color-bg-tint: #fdf2f2;
+  --color-border: #e8c5c5;
+  --gray: #f8f8f8;
+  --gborder: #ddd;
+  --text: #1a1a1a;
+  --muted: #666;
+  --ok: #2e7d32;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Segoe UI',Arial,sans-serif;background:#f0f0f0;min-height:100vh;padding:16px;}
+.card{max-width:560px;margin:0 auto;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 20px rgba(0,0,0,.12);}
+.hdr{background:var(--color-primario);padding:20px 24px;display:flex;align-items:center;gap:16px;}
+.logo{background:#fff;border-radius:8px;padding:8px 10px;flex-shrink:0;}
+/* *** CAMBIAR: Reemplaza el img src con el logo del cliente *** */
+.logo img{height:46px;width:auto;display:block;}
+.hdr-txt h1{color:#fff;font-size:1rem;font-weight:700;}
+.hdr-txt p{color:rgba(255,255,255,.75);font-size:.72rem;margin-top:3px;}
+.banner{background:var(--color-bg-tint);border-bottom:1px solid var(--color-border);padding:10px 24px;display:flex;align-items:center;gap:8px;}
+.blbl{font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;color:var(--color-primario);font-weight:600;}
+.bval{font-size:.88rem;font-weight:700;color:var(--color-primario);}
+.body{padding:20px 24px;}
+.field{margin-bottom:16px;}
+label{display:block;font-size:.78rem;font-weight:600;color:var(--text);margin-bottom:6px;}
+.req{color:var(--color-primario);margin-left:2px;}
+input,select,textarea{width:100%;padding:10px 13px;border:1.5px solid var(--gborder);border-radius:8px;font-size:.88rem;font-family:inherit;color:var(--text);background:#fff;appearance:none;}
+select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:36px;}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--color-primario);}
+textarea{resize:vertical;min-height:80px;line-height:1.5;}
+.hint{font-size:.68rem;color:var(--muted);margin-top:4px;}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;}
+.chklist{border:1.5px solid var(--gborder);border-radius:8px;overflow:hidden;}
+.chi{display:flex;align-items:center;gap:10px;padding:10px 13px;border-bottom:1px solid #f0f0f0;cursor:pointer;}
+.chi:last-child{border-bottom:none;}
+.chi input[type=checkbox]{width:18px;height:18px;accent-color:var(--color-primario);cursor:pointer;flex-shrink:0;}
+.chi label{font-size:.84rem;color:var(--text);cursor:pointer;margin:0;font-weight:400;}
+.estados{display:flex;flex-direction:column;gap:8px;}
+.est{display:flex;align-items:center;gap:10px;padding:10px 13px;border:1.5px solid var(--gborder);border-radius:8px;cursor:pointer;}
+.est input{accent-color:var(--color-primario);width:17px;height:17px;}
+.est .emo{font-size:1.1rem;}
+.est .lbl{font-size:.88rem;font-weight:500;color:var(--text);}
+.div{height:1px;background:#f0f0f0;margin:20px 0;}
+.slbl{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:12px;}
+.btn{width:100%;padding:14px;background:var(--color-primario);color:#fff;border:none;border-radius:8px;font-size:.95rem;font-weight:700;cursor:pointer;margin-top:8px;font-family:inherit;}
+.btn:hover{background:var(--color-primario-light);}
+.btn:disabled{background:#ccc;cursor:not-allowed;}
+.footer{background:var(--gray);border-top:1px solid var(--gborder);padding:12px 24px;text-align:center;font-size:.65rem;color:var(--muted);line-height:1.6;}
+.ok-screen{display:none;text-align:center;padding:48px 24px;}
+.ok-screen .ico{font-size:3rem;margin-bottom:16px;}
+.ok-screen h2{font-size:1.2rem;font-weight:700;color:var(--ok);margin-bottom:8px;}
+.ok-screen p{font-size:.85rem;color:var(--muted);line-height:1.6;}
+.ok-sec{font-weight:600;color:var(--color-primario);}
+.errmsg{background:#fff3f3;border:1px solid #ffc0c0;border-radius:6px;padding:10px 13px;font-size:.8rem;color:#c62828;margin-bottom:12px;display:none;}
+/* ─── Estilos de foto ─── */
+.foto-area{border:2px dashed var(--gborder);border-radius:10px;padding:16px;text-align:center;cursor:pointer;transition:all .2s;background:#fafafa;position:relative;}
+.foto-area:hover,.foto-area.drag{border-color:var(--color-primario);background:var(--color-bg-tint);}
+.foto-area .ico{font-size:2rem;margin-bottom:6px;}
+.foto-area .lbl{font-size:.82rem;color:var(--muted);line-height:1.5;}
+.foto-area .lbl b{color:var(--color-primario);}
+.foto-area input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+.foto-preview{display:none;margin-top:10px;gap:8px;flex-wrap:wrap;}
+.foto-preview.show{display:flex;}
+.foto-thumb{position:relative;width:80px;height:80px;border-radius:6px;overflow:hidden;border:1.5px solid var(--gborder);flex-shrink:0;}
+.foto-thumb img{width:100%;height:100%;object-fit:cover;}
+.foto-thumb .del{position:absolute;top:2px;right:2px;background:rgba(0,0,0,.6);color:#fff;border:none;border-radius:50%;width:18px;height:18px;font-size:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;}
+.foto-count{font-size:.7rem;color:var(--muted);margin-top:4px;}
+.foto-prog{display:none;margin-top:8px;}
+.foto-prog .bar{height:4px;background:#eee;border-radius:2px;overflow:hidden;}
+.foto-prog .fill{height:100%;background:var(--color-primario);width:0;transition:width .3s;}
+.foto-prog .txt{font-size:.7rem;color:var(--muted);margin-top:4px;}
+@media(max-width:400px){.row{grid-template-columns:1fr;}body{padding:8px;}.hdr,.body{padding:16px;}}
 </style>
 </head>
 <body>
-
 <div class="card">
 
-  <!-- HEADER -->
-  <div class="header">
-    <div class="logo-wrap">
-      <img src="https://urosario.edu.co/themes/custom/ur/logo.svg"
-           onerror="this.onerror=null;this.src='https://urosario.edu.co/sites/default/files/2022-03/logo-ur.png';this.onerror=function(){this.style.display='none';document.getElementById('logo-text').style.display='block'}"
-           alt="Universidad del Rosario">
-      <span id="logo-text" style="display:none;font-weight:800;font-size:0.9rem;color:#8B1A1A;letter-spacing:-0.5px">UR</span>
+  <!-- *** CAMBIAR: Nombre empresa y logo *** -->
+  <div class="hdr">
+    <div class="logo">
+      <img src="https://tu-empresa.com/logo.png" onerror="this.style.display='none'" alt="Logo">
     </div>
-    <div class="header-text">
+    <div class="hdr-txt">
       <h1>Registro de Limpieza</h1>
-      <p>Universidad del Rosario — Gestión de Campus</p>
+      <p>[NOMBRE EMPRESA] — Gestion de Instalaciones</p>
     </div>
   </div>
 
-  <!-- SECTOR BANNER -->
-  <div class="sector-banner">
-    <span class="pin">📍</span>
-    <div>
-      <div class="sector-label">Sector asignado</div>
-      <div class="sector-value" id="sector-banner-text">Cargando...</div>
-    </div>
+  <div class="banner">
+    <span>&#128205;</span>
+    <div><div class="blbl">Sector asignado</div><div class="bval" id="bval">Selecciona edificio y sector</div></div>
   </div>
 
-  <!-- FORMULARIO -->
-  <div class="form-body" id="form-section">
+  <div class="body" id="frm">
+    <div class="errmsg" id="err">Por favor completa todos los campos obligatorios.</div>
 
-    <div class="error-msg" id="error-msg">Por favor completa todos los campos obligatorios.</div>
-
-    <!-- Edificio -->
-    <div class="section-label">1. Ubicación</div>
-
+    <div class="slbl">1. Ubicacion</div>
     <div class="field">
       <label>Edificio / Bloque <span class="req">*</span></label>
-      <select id="edificio" onchange="updateSectores()" required>
+      <select id="edif" onchange="loadSec()" required>
         <option value="">— Selecciona el edificio —</option>
-        <option value="Bloque A">Bloque A</option>
-        <option value="Bloque B">Bloque B</option>
-        <option value="Bloque C">Bloque C</option>
-        <option value="Bloque D">Bloque D</option>
-        <option value="Bloque E">Bloque E</option>
-        <option value="Edificio Administrativo">Edificio Administrativo</option>
-        <option value="Biblioteca CRAI">Biblioteca CRAI</option>
-        <option value="Cafetería Central">Cafetería Central</option>
-        <option value="Auditorio Principal">Auditorio Principal</option>
+        <!-- *** CAMBIAR: Agrega los edificios/bloques del cliente *** -->
+        <option>Edificio Principal</option>
+        <option>Bloque A</option>
+        <option>Bloque B</option>
+        <option>Bodega</option>
+        <option>Cafeteria</option>
       </select>
     </div>
-
     <div class="field">
-      <label>Sector específico <span class="req">*</span></label>
-      <select id="sector" required>
+      <label>Sector especifico <span class="req">*</span></label>
+      <select id="sec" required>
         <option value="">— Primero selecciona el edificio —</option>
       </select>
-      <div class="hint">El sector se carga según el edificio seleccionado</div>
+      <div class="hint">El sector se carga segun el edificio seleccionado</div>
     </div>
 
-    <div class="divider"></div>
-
-    <!-- Cleaner -->
-    <div class="section-label">2. Datos del reporte</div>
-
-    <div class="field-row">
+    <div class="div"></div>
+    <div class="slbl">2. Datos del reporte</div>
+    <div class="row">
       <div class="field" style="margin:0">
         <label>Nombre del cleaner <span class="req">*</span></label>
-        <input type="text" id="cleaner" placeholder="Tu nombre completo" required autocomplete="name">
+        <input type="text" id="cln" placeholder="Tu nombre completo" required>
       </div>
       <div class="field" style="margin:0">
         <label>Hora del reporte <span class="req">*</span></label>
         <input type="time" id="hora" required>
       </div>
     </div>
-
     <div class="field" style="margin-top:16px">
-      <label>Tipo de limpieza realizada <span class="req">*</span></label>
+      <label>Tipo de limpieza <span class="req">*</span></label>
       <select id="tipo" required>
-        <option value="">— Selecciona el tipo —</option>
+        <option value="">— Selecciona —</option>
         <option>Rutinaria</option>
-        <option>Desinfección profunda</option>
+        <option>Desinfeccion profunda</option>
         <option>Limpieza de emergencia</option>
         <option>Mantenimiento preventivo</option>
       </select>
     </div>
 
-    <div class="divider"></div>
-
-    <!-- Checklist -->
-    <div class="section-label">3. Checklist de actividades</div>
-
-    <div class="checklist" id="checklist">
-      <div class="check-item">
-        <input type="checkbox" id="c1"><label for="c1">Pisos barridos y trapeados</label>
-      </div>
-      <div class="check-item">
-        <input type="checkbox" id="c2"><label for="c2">Baños desinfectados</label>
-      </div>
-      <div class="check-item">
-        <input type="checkbox" id="c3"><label for="c3">Papeleras vaciadas</label>
-      </div>
-      <div class="check-item">
-        <input type="checkbox" id="c4"><label for="c4">Dispensadores de jabón/papel revisados</label>
-      </div>
-      <div class="check-item">
-        <input type="checkbox" id="c5"><label for="c5">Superficies y mesones limpiados</label>
-      </div>
-      <div class="check-item">
-        <input type="checkbox" id="c6"><label for="c6">Vidrios y espejos limpios</label>
-      </div>
+    <div class="div"></div>
+    <div class="slbl">3. Checklist de actividades</div>
+    <!-- *** CAMBIAR: Adapta las actividades del checklist al cliente *** -->
+    <div class="chklist">
+      <div class="chi"><input type="checkbox" id="c1"><label for="c1">Pisos barridos y trapeados</label></div>
+      <div class="chi"><input type="checkbox" id="c2"><label for="c2">Banos desinfectados</label></div>
+      <div class="chi"><input type="checkbox" id="c3"><label for="c3">Papeleras vaciadas</label></div>
+      <div class="chi"><input type="checkbox" id="c4"><label for="c4">Dispensadores de jabon/papel revisados</label></div>
+      <div class="chi"><input type="checkbox" id="c5"><label for="c5">Superficies y mesones limpiados</label></div>
+      <div class="chi"><input type="checkbox" id="c6"><label for="c6">Vidrios y espejos limpios</label></div>
     </div>
 
-    <div class="divider"></div>
-
-    <!-- Personas trabajando -->
-    <div class="section-label">4. Ocupación</div>
-
+    <div class="div"></div>
+    <div class="slbl">4. Ocupacion</div>
     <div class="field">
-      <label>¿Hay personas trabajando en el sector? <span class="req">*</span></label>
-      <select id="personas" required>
+      <label>Hay personas trabajando en el area? <span class="req">*</span></label>
+      <select id="pers" required>
         <option value="">— Selecciona —</option>
-        <option>Sí</option>
+        <option>Si</option>
         <option>No</option>
-        <option>Algunas áreas</option>
+        <option>Algunas areas</option>
       </select>
     </div>
 
-    <div class="divider"></div>
-
-    <!-- Estado y novedades -->
-    <div class="section-label">5. Estado del sector</div>
-
-    <div class="estado-group">
-      <label class="estado-option ok">
-        <input type="radio" name="estado" value="✅ Sin novedades" required>
-        <span class="emo">✅</span>
-        <span class="estado-label">Sin novedades</span>
-      </label>
-      <label class="estado-option warn">
-        <input type="radio" name="estado" value="⚠️ Novedad menor">
-        <span class="emo">⚠️</span>
-        <span class="estado-label">Novedad menor</span>
-      </label>
-      <label class="estado-option urgent">
-        <input type="radio" name="estado" value="🚨 Urgente">
-        <span class="emo">🚨</span>
-        <span class="estado-label">Urgente — requiere atención inmediata</span>
-      </label>
+    <div class="div"></div>
+    <div class="slbl">5. Estado del sector</div>
+    <div class="estados">
+      <label class="est"><input type="radio" name="est" value="Sin novedades" required><span class="emo">&#9989;</span><span class="lbl">Sin novedades</span></label>
+      <label class="est"><input type="radio" name="est" value="Novedad menor"><span class="emo">&#9888;&#65039;</span><span class="lbl">Novedad menor</span></label>
+      <label class="est"><input type="radio" name="est" value="Urgente"><span class="emo">&#128680;</span><span class="lbl">Urgente — requiere atencion inmediata</span></label>
     </div>
-
     <div class="field" style="margin-top:14px">
-      <label>Descripción de la novedad</label>
-      <textarea id="novedad" placeholder="Describe la novedad o incidente si aplica. Si no hay novedades, deja vacío."></textarea>
+      <label>Descripcion de la novedad</label>
+      <textarea id="nov" placeholder="Describe la novedad si aplica. Si no hay, deja vacio."></textarea>
     </div>
 
-    <!-- Submit -->
-    <button class="submit-btn" id="submit-btn" onclick="submitForm()">
-      Enviar reporte ✓
-    </button>
-
-  </div>
-
-  <!-- SUCCESS SCREEN -->
-  <div class="success-screen" id="success-screen">
-    <div class="success-icon">✅</div>
-    <div class="success-title">Reporte enviado correctamente</div>
-    <div class="success-sub">
-      Sector: <span class="success-sector" id="success-sector"></span><br>
-      Los datos han sido registrados en el sistema.<br>
-      <br>
-      <button onclick="resetForm()" style="margin-top:16px;padding:10px 24px;border-radius:8px;border:1.5px solid #8B1A1A;background:#fff;color:#8B1A1A;font-size:0.85rem;font-weight:600;cursor:pointer">
-        Nuevo reporte
-      </button>
+    <div class="div"></div>
+    <div class="slbl">6. Evidencia fotografica (opcional)</div>
+    <div class="field">
+      <div class="foto-area" id="foto-area" onclick="document.getElementById('foto-input').click()">
+        <div class="ico">📷</div>
+        <div class="lbl">
+          <b>Toca aqui para tomar o subir fotos</b><br>
+          Agrega evidencia visual de la novedad<br>
+          <span style="font-size:.65rem;color:#aaa;">Hasta 3 fotos · JPG/PNG · Max 5MB cada una</span>
+        </div>
+        <input type="file" id="foto-input" accept="image/*" multiple capture="environment"
+               onchange="previewFotos(this)" onclick="event.stopPropagation()">
+      </div>
+      <div class="foto-preview" id="foto-preview"></div>
+      <div class="foto-count" id="foto-count"></div>
+      <div class="foto-prog" id="foto-prog">
+        <div class="bar"><div class="fill" id="foto-fill"></div></div>
+        <div class="txt" id="foto-txt">Subiendo fotos...</div>
+      </div>
     </div>
+
+    <button class="btn" id="sbtn" onclick="send()">Enviar reporte &#10003;</button>
   </div>
 
-  <!-- FOOTER -->
+  <!-- Pantalla de exito -->
+  <div class="ok-screen" id="oks">
+    <div class="ico">&#9989;</div>
+    <h2>Reporte enviado correctamente</h2>
+    <p>Sector: <span class="ok-sec" id="oksec"></span><br>
+    Los datos han sido registrados en el sistema.<br><br>
+    <button onclick="reset()" style="margin-top:16px;padding:10px 24px;border-radius:8px;border:1.5px solid var(--color-primario);background:#fff;color:var(--color-primario);font-size:.85rem;font-weight:600;cursor:pointer;font-family:inherit;">
+      Nuevo reporte
+    </button></p>
+  </div>
+
+  <!-- *** CAMBIAR: Nombre empresa en el footer *** -->
   <div class="footer">
-    Sistema de Gestión de Limpieza — Universidad del Rosario<br>
-    Desarrollado con Google Forms · Sheets · Power BI · $0 adicionales
+    Sistema de Gestion de Limpieza — [NOMBRE EMPRESA]<br>
+    Desarrollado con Google Sheets + Apps Script + QR Codes · $0 adicionales
   </div>
-
 </div>
 
 <script>
-// ── Sectores por edificio ──
-const SECTORES = {
+// *** CAMBIAR: URL del Apps Script del cliente ***
+var URL_SCRIPT = 'https://script.google.com/macros/s/TU_DEPLOYMENT_ID/exec';
+
+// *** CAMBIAR: Sectores por edificio del cliente ***
+var SECS = {
+  "Edificio Principal": [
+    "Recepcion - Piso 1",
+    "Oficinas - Piso 1",
+    "Bano Hombres - Piso 1",
+    "Bano Mujeres - Piso 1",
+    "Sala de reuniones - Piso 1",
+    "Oficinas - Piso 2",
+    "Bano Hombres - Piso 2",
+    "Bano Mujeres - Piso 2",
+    "Escaleras"
+  ],
   "Bloque A": [
-    "Baño sector 1 — Bloque A, Piso 1",
-    "Baño sector 2 — Bloque A, Piso 1",
-    "Baño sector 1 — Bloque A, Piso 2",
-    "Baño sector 2 — Bloque A, Piso 2",
-    "Pasillo principal — Bloque A, Piso 1",
-    "Pasillo principal — Bloque A, Piso 2",
-    "Aula 101 — Bloque A",
-    "Aula 102 — Bloque A",
-    "Escaleras — Bloque A",
+    "Bano sector 1 - Piso 1",
+    "Bano sector 2 - Piso 1",
+    "Pasillo principal - Piso 1",
+    "Escaleras - Bloque A"
   ],
   "Bloque B": [
-    "Baño sector 1 — Bloque B, Piso 1",
-    "Baño sector 2 — Bloque B, Piso 1",
-    "Baño sector 1 — Bloque B, Piso 2",
-    "Baño sector 2 — Bloque B, Piso 2",
-    "Pasillo principal — Bloque B, Piso 1",
-    "Pasillo principal — Bloque B, Piso 2",
-    "Laboratorio Química — Bloque B",
-    "Laboratorio Biología — Bloque B",
-    "Escaleras — Bloque B",
+    "Bano sector 1 - Piso 1",
+    "Laboratorio - Piso 1",
+    "Salon - Piso 2",
+    "Escaleras - Bloque B"
   ],
-  "Bloque C": [
-    "Baño sector 1 — Bloque C, Piso 1",
-    "Baño sector 2 — Bloque C, Piso 1",
-    "Baño sector 1 — Bloque C, Piso 2",
-    "Baño sector 2 — Bloque C, Piso 2",
-    "Baño sector 1 — Bloque C, Piso 3",
-    "Baño sector 2 — Bloque C, Piso 3",
-    "Pasillo Piso 1 — Bloque C",
-    "Pasillo Piso 2 — Bloque C",
-    "Pasillo Piso 3 — Bloque C",
-    "Laboratorio — Bloque C, Piso 2",
-    "Escaleras — Bloque C",
+  "Bodega": [
+    "Zona de almacenamiento",
+    "Bano personal",
+    "Zona de carga"
   ],
-  "Bloque D": [
-    "Baño sector 1 — Bloque D, Piso 1",
-    "Baño sector 2 — Bloque D, Piso 1",
-    "Baño sector 1 — Bloque D, Piso 2",
-    "Baño sector 2 — Bloque D, Piso 2",
-    "Pasillo principal — Bloque D",
-    "Sala de reuniones — Bloque D",
-    "Escaleras — Bloque D",
-  ],
-  "Bloque E": [
-    "Baño sector 1 — Bloque E, Piso 1",
-    "Baño sector 2 — Bloque E, Piso 1",
-    "Baño sector 1 — Bloque E, Piso 2",
-    "Baño sector 2 — Bloque E, Piso 2",
-    "Pasillo principal — Bloque E",
-    "Escaleras — Bloque E",
-  ],
-  "Edificio Administrativo": [
-    "Baño planta baja — Edificio Administrativo",
-    "Baño piso 1 — Edificio Administrativo",
-    "Baño piso 2 — Edificio Administrativo",
-    "Recepción — Edificio Administrativo",
-    "Salas de reuniones — Edificio Administrativo",
-    "Pasillos — Edificio Administrativo",
-    "Ascensor — Edificio Administrativo",
-  ],
-  "Biblioteca CRAI": [
-    "Baño planta baja — CRAI",
-    "Baño piso 1 — CRAI",
-    "Baño piso 2 — CRAI",
-    "Sala de lectura principal — CRAI",
-    "Sala de estudio silencioso — CRAI",
-    "Pasillos — CRAI",
-  ],
-  "Cafetería Central": [
-    "Zona de mesas — Cafetería Central",
-    "Cocina — Cafetería Central",
-    "Baños cafetería",
-    "Zona de servicio — Cafetería Central",
-  ],
-  "Auditorio Principal": [
-    "Auditorio — Sala principal",
-    "Baños auditorio",
-    "Lobby — Auditorio",
-    "Camerinos — Auditorio",
-  ],
+  "Cafeteria": [
+    "Zona de mesas",
+    "Cocina",
+    "Banos cafeteria",
+    "Zona de servicio"
+  ]
 };
 
-// ── Leer parámetros del QR en la URL ──
-const params = new URLSearchParams(window.location.search);
-const sectorParam = params.get('sector') || params.get('s') || '';
-const edificioParam = params.get('edificio') || params.get('e') || '';
+// ─── Funciones del formulario (NO cambiar) ──────────────────────
 
-function updateSectores() {
-  const edificio = document.getElementById('edificio').value;
-  const sectorSel = document.getElementById('sector');
-  sectorSel.innerHTML = '<option value="">— Selecciona el sector —</option>';
-  if (SECTORES[edificio]) {
-    SECTORES[edificio].forEach(s => {
-      const opt = document.createElement('option');
-      opt.value = s; opt.textContent = s;
-      sectorSel.appendChild(opt);
+function loadSec() {
+  var e = document.getElementById('edif').value;
+  var s = document.getElementById('sec');
+  s.innerHTML = '<option value="">— Selecciona el sector —</option>';
+  if (SECS[e]) {
+    SECS[e].forEach(function(x) {
+      var o = document.createElement('option');
+      o.value = x; o.textContent = x;
+      s.appendChild(o);
     });
   }
-  updateBanner();
+  upBanner();
 }
 
-function updateBanner() {
-  const edificio = document.getElementById('edificio').value;
-  const sector = document.getElementById('sector').value;
-  const banner = document.getElementById('sector-banner-text');
-  if (sector) banner.textContent = sector;
-  else if (edificio) banner.textContent = edificio + ' — selecciona sector';
-  else banner.textContent = 'Selecciona edificio y sector';
+function upBanner() {
+  var e = document.getElementById('edif').value;
+  var s = document.getElementById('sec').value;
+  document.getElementById('bval').textContent = s || (e ? e + ' — elige sector' : 'Selecciona edificio y sector');
 }
 
-function setHoraActual() {
-  const now = new Date();
-  const hh = String(now.getHours()).padStart(2, '0');
-  const mm = String(now.getMinutes()).padStart(2, '0');
-  document.getElementById('hora').value = hh + ':' + mm;
+function setHora() {
+  var n = new Date();
+  document.getElementById('hora').value = ('0' + n.getHours()).slice(-2) + ':' + ('0' + n.getMinutes()).slice(-2);
 }
 
-function submitForm() {
-  const edificio = document.getElementById('edificio').value;
-  const sector = document.getElementById('sector').value;
-  const cleaner = document.getElementById('cleaner').value.trim();
-  const hora = document.getElementById('hora').value;
-  const tipo = document.getElementById('tipo').value;
-  const personas = document.getElementById('personas').value;
-  const estado = document.querySelector('input[name="estado"]:checked');
-  const errMsg = document.getElementById('error-msg');
+// ─── Manejo de fotos ─────────────────────────────────────────
+var fotosSeleccionadas = [];
 
-  if (!edificio || !sector || !cleaner || !hora || !tipo || !personas || !estado) {
-    errMsg.style.display = 'block';
-    errMsg.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+function previewFotos(input) {
+  var files = Array.from(input.files).slice(0, 3); // Max 3 fotos
+  fotosSeleccionadas = files;
+  var preview = document.getElementById('foto-preview');
+  var count = document.getElementById('foto-count');
+  preview.innerHTML = '';
+
+  if (files.length === 0) {
+    preview.classList.remove('show');
+    count.textContent = '';
     return;
   }
 
-  errMsg.style.display = 'none';
-  const btn = document.getElementById('submit-btn');
+  files.forEach(function(file, i) {
+    var reader = new FileReader();
+    reader.onload = function(ev) {
+      var thumb = document.createElement('div');
+      thumb.className = 'foto-thumb';
+      thumb.innerHTML = '<img src="' + ev.target.result + '" alt="foto ' + (i+1) + '">' +
+        '<button class="del" onclick="eliminarFoto(' + i + ')">✕</button>';
+      preview.appendChild(thumb);
+    };
+    reader.readAsDataURL(file);
+  });
+
+  preview.classList.add('show');
+  count.textContent = files.length + (files.length === 1 ? ' foto seleccionada' : ' fotos seleccionadas');
+}
+
+function eliminarFoto(idx) {
+  fotosSeleccionadas.splice(idx, 1);
+  // Re-crear el input para reflejar el cambio
+  var input = document.getElementById('foto-input');
+  var dt = new DataTransfer();
+  fotosSeleccionadas.forEach(function(f) { dt.items.add(f); });
+  input.files = dt.files;
+  previewFotos(input);
+}
+
+function fotoAbase64(file) {
+  return new Promise(function(resolve, reject) {
+    var reader = new FileReader();
+    reader.onload = function(e) {
+      // Quitar el prefijo "data:image/...;base64,"
+      var base64 = e.target.result.split(',')[1];
+      resolve({ nombre: file.name, tipo: file.type, base64: base64 });
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+function send() {
+  var e = document.getElementById('edif').value;
+  var s = document.getElementById('sec').value;
+  var c = document.getElementById('cln').value.trim();
+  var h = document.getElementById('hora').value;
+  var t = document.getElementById('tipo').value;
+  var p = document.getElementById('pers').value;
+  var est = document.querySelector('input[name=est]:checked');
+  var err = document.getElementById('err');
+
+  if (!e || !s || !c || !h || !t || !p || !est) {
+    err.style.display = 'block';
+    err.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    return;
+  }
+  err.style.display = 'none';
+
+  var btn = document.getElementById('sbtn');
   btn.disabled = true;
   btn.textContent = 'Enviando...';
 
-  const checklist = [];
-  for (let i = 1; i <= 6; i++) {
-    if (document.getElementById('c' + i).checked) {
-      checklist.push(document.getElementById('c' + i).nextElementSibling.textContent);
-    }
+  var chk = [];
+  for (var i = 1; i <= 6; i++) {
+    var el = document.getElementById('c' + i);
+    if (el && el.checked) chk.push(el.nextElementSibling.textContent);
   }
 
-  const novedad = document.getElementById('novedad').value.trim();
+  var nov = document.getElementById('nov').value.trim();
+  var d = new Date();
+  var ts = d.getDate() + '/' + (d.getMonth() + 1) + '/' + d.getFullYear() + ' ' +
+           ('0' + d.getHours()).slice(-2) + ':' + ('0' + d.getMinutes()).slice(-2);
 
-  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyVl0Mb3_j9_ihArDyfO5prgonGaJF67QJyV5y2MH-hltGnYe4O-EmugqBKs_wIIBr-/exec';
+  // Si hay fotos, usar POST con JSON (incluye base64)
+  // Si no hay fotos, usar GET con Image() (mas rapido)
+  if (fotosSeleccionadas.length > 0) {
+    enviarConFotos(e, s, c, h, t, p, est.value, chk, nov, ts);
+  } else {
+    enviarSinFotos(e, s, c, h, t, p, est.value, chk, nov, ts);
+  }
+}
 
-  // Método GET con parámetros en la URL — funciona en TODOS los celulares
-  const params = new URLSearchParams({
-    timestamp: new Date().toLocaleString('es-CO'),
-    edificio, sector, cleaner, hora, tipo,
-    personas,
-    estado: estado.value,
-    checklist: checklist.join(' | '),
-    novedad: novedad || 'Sin novedades'
+function enviarSinFotos(e, s, c, h, t, p, est, chk, nov, ts) {
+  var q = 'timestamp=' + encodeURIComponent(ts) +
+          '&edificio=' + encodeURIComponent(e) +
+          '&sector=' + encodeURIComponent(s) +
+          '&cleaner=' + encodeURIComponent(c) +
+          '&hora=' + encodeURIComponent(h) +
+          '&tipo=' + encodeURIComponent(t) +
+          '&personas=' + encodeURIComponent(p) +
+          '&estado=' + encodeURIComponent(est) +
+          '&checklist=' + encodeURIComponent(chk.join(' | ')) +
+          '&novedad=' + encodeURIComponent(nov || 'Sin novedades') +
+          '&fotos=Sin fotos';
+
+  // Metodo Image() GET — funciona en TODOS los celulares
+  var img = new Image();
+  img.onload = img.onerror = function() { showOk(s); };
+  img.src = URL_SCRIPT + '?' + q;
+  setTimeout(function() { showOk(s); }, 5000);
+}
+
+function enviarConFotos(e, s, c, h, t, p, est, chk, nov, ts) {
+  var prog = document.getElementById('foto-prog');
+  var fill = document.getElementById('foto-fill');
+  var txt = document.getElementById('foto-txt');
+  prog.style.display = 'block';
+  txt.textContent = 'Preparando fotos...';
+  fill.style.width = '10%';
+
+  // Convertir todas las fotos a base64
+  Promise.all(fotosSeleccionadas.map(fotoAbase64)).then(function(fotos) {
+    fill.style.width = '40%';
+    txt.textContent = 'Enviando datos y fotos...';
+
+    var payload = {
+      timestamp: ts,
+      edificio: e, sector: s, cleaner: c,
+      hora: h, tipo: t, personas: p,
+      estado: est,
+      checklist: chk.join(' | '),
+      novedad: nov || 'Sin novedades',
+      fotos: fotos  // Array de {nombre, tipo, base64}
+    };
+
+    fetch(URL_SCRIPT, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    }).then(function() {
+      fill.style.width = '100%';
+      txt.textContent = 'Fotos enviadas correctamente';
+      setTimeout(function() { showOk(s); }, 800);
+    }).catch(function() {
+      // Si fetch falla, intentar sin fotos como fallback
+      txt.textContent = 'Enviando sin fotos (red limitada)...';
+      enviarSinFotos(e, s, c, h, t, p, est, chk, nov, ts);
+    });
+
+  }).catch(function() {
+    // Si falla la lectura de fotos, enviar sin ellas
+    enviarSinFotos(e, s, c, h, t, p, est, chk, nov, ts);
   });
-
-  const url = SCRIPT_URL + '?' + params.toString();
-
-  // Usar Image() como transporte — nunca falla por CORS en ningún celular
-  const img = new Image();
-  img.onload = img.onerror = function() {
-    showSuccess(sector);
-  };
-  img.src = url;
-
-  // Fallback: si Image no dispara en 4 segundos, mostrar éxito de todos modos
-  setTimeout(() => showSuccess(sector), 4000);
 }
 
-function showSuccess(sector) {
-  document.getElementById('form-section').style.display = 'none';
-  document.getElementById('success-screen').style.display = 'block';
-  document.getElementById('success-sector').textContent = sector;
+function showOk(s) {
+  if (document.getElementById('oks').style.display === 'block') return;
+  document.getElementById('frm').style.display = 'none';
+  document.getElementById('oks').style.display = 'block';
+  document.getElementById('oksec').textContent = s;
 }
 
-function resetForm() {
-  document.getElementById('form-section').style.display = 'block';
-  document.getElementById('success-screen').style.display = 'none';
-  document.getElementById('edificio').value = '';
-  document.getElementById('sector').innerHTML = '<option value="">— Primero selecciona el edificio —</option>';
-  document.getElementById('cleaner').value = '';
+function reset() {
+  document.getElementById('frm').style.display = 'block';
+  document.getElementById('oks').style.display = 'none';
+  document.getElementById('edif').value = '';
+  document.getElementById('sec').innerHTML = '<option value="">— Primero selecciona el edificio —</option>';
+  document.getElementById('cln').value = '';
   document.getElementById('tipo').value = '';
-  document.getElementById('personas').value = '';
-  document.querySelector('input[name="estado"]:checked') && (document.querySelector('input[name="estado"]:checked').checked = false);
-  document.getElementById('novedad').value = '';
-  for (let i = 1; i <= 6; i++) document.getElementById('c' + i).checked = false;
-  document.getElementById('submit-btn').disabled = false;
-  document.getElementById('submit-btn').textContent = 'Enviar reporte ✓';
-  document.getElementById('sector-banner-text').textContent = 'Selecciona edificio y sector';
-  setHoraActual();
-}
-
-// ── Inicializar ──
-setHoraActual();
-
-// Pre-cargar edificio y sector desde parámetros QR
-if (edificioParam && SECTORES[edificioParam]) {
-  document.getElementById('edificio').value = edificioParam;
-  updateSectores();
-  if (sectorParam) {
-    setTimeout(() => {
-      const sectorSel = document.getElementById('sector');
-      for (let opt of sectorSel.options) {
-        if (opt.value === sectorParam || opt.value.includes(sectorParam)) {
-          sectorSel.value = opt.value;
-          break;
-        }
-      }
-      updateBanner();
-    }, 50);
+  document.getElementById('pers').value = '';
+  var r = document.querySelector('input[name=est]:checked');
+  if (r) r.checked = false;
+  document.getElementById('nov').value = '';
+  for (var i = 1; i <= 6; i++) {
+    var el = document.getElementById('c' + i);
+    if (el) el.checked = false;
   }
-} else {
-  document.getElementById('sector-banner-text').textContent = 'Selecciona edificio y sector';
+  document.getElementById('sbtn').disabled = false;
+  document.getElementById('sbtn').textContent = 'Enviar reporte ✓';
+  document.getElementById('bval').textContent = 'Selecciona edificio y sector';
+  // Reset fotos
+  fotosSeleccionadas = [];
+  document.getElementById('foto-preview').innerHTML = '';
+  document.getElementById('foto-preview').classList.remove('show');
+  document.getElementById('foto-count').textContent = '';
+  document.getElementById('foto-prog').style.display = 'none';
+  document.getElementById('foto-input').value = '';
+  setHora();
 }
 
-// Actualizar banner cuando cambie el sector
-document.getElementById('sector').addEventListener('change', updateBanner);
+document.getElementById('sec').addEventListener('change', upBanner);
+setHora();
 </script>
 </body>
 </html>
