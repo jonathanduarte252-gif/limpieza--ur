@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>Registro de Limpieza — [NOMBRE EMPRESA]</title>
+<title>Registro de Limpieza — Universidad del Rosario</title>
 <!--
   ╔═══════════════════════════════════════════════════════════════╗
   ║  SISTEMA QR DE GESTION DE LIMPIEZA — TEMPLATE v1.0           ║
@@ -69,18 +69,20 @@ textarea{resize:vertical;min-height:80px;line-height:1.5;}
 .ok-sec{font-weight:600;color:var(--color-primario);}
 .errmsg{background:#fff3f3;border:1px solid #ffc0c0;border-radius:6px;padding:10px 13px;font-size:.8rem;color:#c62828;margin-bottom:12px;display:none;}
 /* ─── Estilos de foto ─── */
-.foto-area{border:2px dashed var(--gborder);border-radius:10px;padding:16px;text-align:center;cursor:pointer;transition:all .2s;background:#fafafa;position:relative;}
-.foto-area:hover,.foto-area.drag{border-color:var(--color-primario);background:var(--color-bg-tint);}
-.foto-area .ico{font-size:2rem;margin-bottom:6px;}
-.foto-area .lbl{font-size:.82rem;color:var(--muted);line-height:1.5;}
+.foto-area{border:2px dashed var(--gborder);border-radius:10px;padding:14px 16px;text-align:center;transition:all .2s;background:#fafafa;}
+.foto-area:hover{border-color:var(--color-primario);background:var(--color-bg-tint);}
+.foto-area .ico{font-size:1.8rem;margin-bottom:6px;display:block;}
+.foto-area .lbl{font-size:.8rem;color:var(--muted);line-height:1.5;}
 .foto-area .lbl b{color:var(--color-primario);}
-.foto-area input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+/* Input file SIN position:absolute — no bloquea otros elementos */
+.foto-input-wrap{margin-top:10px;}
+.foto-input-wrap input[type=file]{width:100%;padding:8px;border:1.5px solid var(--gborder);border-radius:8px;font-size:.8rem;font-family:inherit;background:#fff;cursor:pointer;}
 .foto-preview{display:none;margin-top:10px;gap:8px;flex-wrap:wrap;}
 .foto-preview.show{display:flex;}
 .foto-thumb{position:relative;width:80px;height:80px;border-radius:6px;overflow:hidden;border:1.5px solid var(--gborder);flex-shrink:0;}
 .foto-thumb img{width:100%;height:100%;object-fit:cover;}
-.foto-thumb .del{position:absolute;top:2px;right:2px;background:rgba(0,0,0,.6);color:#fff;border:none;border-radius:50%;width:18px;height:18px;font-size:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;}
-.foto-count{font-size:.7rem;color:var(--muted);margin-top:4px;}
+.foto-thumb .del{position:absolute;top:2px;right:2px;background:rgba(0,0,0,.65);color:#fff;border:none;border-radius:50%;width:20px;height:20px;font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.foto-count{font-size:.7rem;color:var(--muted);margin-top:6px;}
 .foto-prog{display:none;margin-top:8px;}
 .foto-prog .bar{height:4px;background:#eee;border-radius:2px;overflow:hidden;}
 .foto-prog .fill{height:100%;background:var(--color-primario);width:0;transition:width .3s;}
@@ -94,11 +96,11 @@ textarea{resize:vertical;min-height:80px;line-height:1.5;}
   <!-- *** CAMBIAR: Nombre empresa y logo *** -->
   <div class="hdr">
     <div class="logo">
-      <img src="https://tu-empresa.com/logo.png" onerror="this.style.display='none'" alt="Logo">
+      <img src="https://urosario.edu.co/themes/custom/ur/logo.svg" onerror="this.style.display='none'" alt="Logo">
     </div>
     <div class="hdr-txt">
       <h1>Registro de Limpieza</h1>
-      <p>[NOMBRE EMPRESA] — Gestion de Instalaciones</p>
+      <p>Universidad del Rosario — Gestion de Campus</p>
     </div>
   </div>
 
@@ -193,15 +195,16 @@ textarea{resize:vertical;min-height:80px;line-height:1.5;}
     <div class="div"></div>
     <div class="slbl">6. Evidencia fotografica (opcional)</div>
     <div class="field">
-      <div class="foto-area" id="foto-area" onclick="document.getElementById('foto-input').click()">
-        <div class="ico">📷</div>
+      <div class="foto-area">
+        <span class="ico">📷</span>
         <div class="lbl">
-          <b>Toca aqui para tomar o subir fotos</b><br>
-          Agrega evidencia visual de la novedad<br>
-          <span style="font-size:.65rem;color:#aaa;">Hasta 3 fotos · JPG/PNG · Max 5MB cada una</span>
+          <b>Agrega fotos como evidencia de la novedad</b><br>
+          Hasta 3 fotos · JPG/PNG · Max 5MB cada una
         </div>
+      </div>
+      <div class="foto-input-wrap">
         <input type="file" id="foto-input" accept="image/*" multiple capture="environment"
-               onchange="previewFotos(this)" onclick="event.stopPropagation()">
+               onchange="previewFotos(this)">
       </div>
       <div class="foto-preview" id="foto-preview"></div>
       <div class="foto-count" id="foto-count"></div>
@@ -227,7 +230,7 @@ textarea{resize:vertical;min-height:80px;line-height:1.5;}
 
   <!-- *** CAMBIAR: Nombre empresa en el footer *** -->
   <div class="footer">
-    Sistema de Gestion de Limpieza — [NOMBRE EMPRESA]<br>
+    Sistema de Gestion de Limpieza — Universidad del Rosario<br>
     Desarrollado con Google Sheets + Apps Script + QR Codes · $0 adicionales
   </div>
 </div>
@@ -335,12 +338,28 @@ function previewFotos(input) {
 
 function eliminarFoto(idx) {
   fotosSeleccionadas.splice(idx, 1);
-  // Re-crear el input para reflejar el cambio
-  var input = document.getElementById('foto-input');
-  var dt = new DataTransfer();
-  fotosSeleccionadas.forEach(function(f) { dt.items.add(f); });
-  input.files = dt.files;
-  previewFotos(input);
+  // Regenerar previews sin usar DataTransfer (no compatible en todos los celulares)
+  var preview = document.getElementById('foto-preview');
+  var count = document.getElementById('foto-count');
+  preview.innerHTML = '';
+  if (fotosSeleccionadas.length === 0) {
+    preview.classList.remove('show');
+    count.textContent = '';
+    document.getElementById('foto-input').value = '';
+    return;
+  }
+  fotosSeleccionadas.forEach(function(file, i) {
+    var reader = new FileReader();
+    reader.onload = function(ev) {
+      var thumb = document.createElement('div');
+      thumb.className = 'foto-thumb';
+      thumb.innerHTML = '<img src="' + ev.target.result + '" alt="foto">' +
+        '<button class="del" onclick="eliminarFoto(' + i + ')">✕</button>';
+      preview.appendChild(thumb);
+    };
+    reader.readAsDataURL(file);
+  });
+  count.textContent = fotosSeleccionadas.length + (fotosSeleccionadas.length === 1 ? ' foto' : ' fotos') + ' seleccionada(s)';
 }
 
 function fotoAbase64(file) {
